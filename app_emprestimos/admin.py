@@ -1,6 +1,6 @@
 from django.contrib import admin
 from app_emprestimos.models import ObjetoEmprestimo
-from app_emprestimos.models import Pessoa
+from app_emprestimos.models import Pessoa, RegistroEmprestimos
 
 class ObjetoAdmin(admin.ModelAdmin):
 
@@ -24,5 +24,15 @@ class PessoaAdmin(admin.ModelAdmin):
     list_display = ('nome', 'telefone')
 
 
+class RegistroEmprestimoAdmin(admin.ModelAdmin):
+
+
+    search_fields = [
+        'pessoa__nome',
+    ]
+    list_display = ('data_emprestimo', 'pessoa', 'data_prevista_devolucao', 'status')
+
+
 admin.site.register(ObjetoEmprestimo, ObjetoAdmin)
 admin.site.register(Pessoa, PessoaAdmin)
+admin.site.register(RegistroEmprestimos, RegistroEmprestimoAdmin)

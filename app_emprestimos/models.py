@@ -39,6 +39,9 @@ class ObjetoEmprestimo(models.Model):
         choices=TIPO_OBJETO_CHOICES,
     )
 
+    def __str__(self):
+        return self.nome
+
     class Meta:
         db_table = 'OBJ_001OBJ'
         verbose_name = 'Objeto para Empréstimo'
@@ -65,3 +68,45 @@ class Pessoa(models.Model):
 
 
 
+class RegistroEmprestimos(models.Model):
+    ST_EMPRESTADO = 1
+    ST_DEVOLVIDO = 2
+    ST_EXTRAVIADO = 3
+
+
+    ST_STATUS_CHOICES = (
+        (ST_EMPRESTADO, 'Objeto Emprestado'),
+        (ST_DEVOLVIDO, 'Objeto Devolvido'),
+        (ST_EXTRAVIADO, 'Objeto Extraviado'),
+    )
+    data_emprestimo = models.DateTimeField(
+        null=False, blank=False, auto_now_add=True,
+        verbose_name='Data De Emprestimo'
+    )
+    objeto = models.ForeignKey(
+        'app_emprestimos.ObjetoEmprestimo',
+        null=False, blank=False, 
+        on_delete=models.PROTECT,
+        verbose_name='Objeto Emprestado'
+    )
+    pessoa = models.ForeignKey(
+        'app_emprestimos.Pessoa',
+        null=False, blank=False,   
+        on_delete=models.PROTECT,
+        verbose_name='Nome Da Pessoa'
+    )
+    data_prevista_devolucao = models.DateField(
+        null=True, blank=True,
+        verbose_name='Previsão De Entrega'
+    )
+    data_devolucao = models.DateField(
+        null=True, blank=True,
+        verbose_name='Data Da Entrega'
+    )
+    status = models.PositiveSmallIntegerField(
+        null=False, blank=False,
+        verbose_name='Status',
+        choices=ST_STATUS_CHOICES,
+    )
+    class Meta:
+        db_table='REG_001EMP'
