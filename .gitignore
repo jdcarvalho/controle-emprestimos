@@ -1,8 +1,9 @@
 db.sqlite3
-*/__pycache__/*
+**/__pycache__/
 /.idea/.gitignore
 /.idea/emprestimos.iml
 /.idea/modules.xml
 /.idea/inspectionProfiles/profiles_settings.xml
 /.idea/vcs.xml
 **/migrations/*[0-9]*.py
+venv/
