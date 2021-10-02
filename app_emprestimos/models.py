@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import PROTECT
 
 
 class ObjetoEmprestimo(models.Model):
@@ -42,4 +43,25 @@ class ObjetoEmprestimo(models.Model):
         db_table = 'OBJ_001OBJ'
         verbose_name = 'Objeto para Empréstimo'
         verbose_name_plural = 'Objetos para Empréstimo'
+
+
+
+class Pessoa(models.Model):
+    nome = models.CharField(
+        null=False, blank=False,
+        max_length=200,
+    )
+    telefone = models.CharField(
+        null=False, blank=False,
+        max_length=20,
+    )
+
+    def __str__(self):
+        return self.nome
+
+    class Meta:
+        db_table = 'PES_001PES'
+        
+
+
 
