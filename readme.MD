@@ -19,17 +19,25 @@
     git clone git@github.com:jdcarvalho/controle-emprestimos.git
 ~~~
 
-5. Devemos criar as migrations e migrar o projeto com os comandos especificados abaixo
+5. Ative o ambiente e instale os requisitos de código
+
+~~~
+    source ./env.emprestimos/bin/activate
+    cd src/emprestimos
+    pip install -r requirements.txt
+~~~
+
+6. Devemos criar as migrations e migrar o projeto com os comandos especificados abaixo
 
 ~~~
     ./manage.py makemigrations
     ./manage.py migrate    
 ~~~
 
-6. Devemos então coletar o estáticos o projeto
+7. Devemos então coletar o estáticos o projeto
 
 ~~~
     ./manage.py collectstatic
 ~~~
 
-7. Crie sua própria branche (Seguimos git flow) ou faça um fork para aplicar um pull request
+8. Crie sua própria branche (Seguimos git flow) ou faça um fork para aplicar um pull request
