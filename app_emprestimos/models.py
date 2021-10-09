@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.db.models.deletion import PROTECT
 
 
@@ -39,6 +40,16 @@ class ObjetoEmprestimo(models.Model):
         choices=TIPO_OBJETO_CHOICES,
     )
 
+    @classmethod
+    def listar_objetos_nao_emprestados(cls):
+        objetos = ObjetoEmprestimo.objects.filter(
+            Q(registroemprestimos__isnull=True) |
+            Q(registroemprestimos__status__in=[
+                RegistroEmprestimos.ST_DEVOLVIDO,
+            ])
+        )
+        return objetos
+
     def __str__(self):
         return self.nome
 
@@ -46,7 +57,6 @@ class ObjetoEmprestimo(models.Model):
         db_table = 'OBJ_001OBJ'
         verbose_name = 'Objeto para Empréstimo'
         verbose_name_plural = 'Objetos para Empréstimo'
-
 
 
 class Pessoa(models.Model):
@@ -64,11 +74,10 @@ class Pessoa(models.Model):
 
     class Meta:
         db_table = 'PES_001PES'
-        
-
 
 
 class RegistroEmprestimos(models.Model):
+
     ST_EMPRESTADO = 1
     ST_DEVOLVIDO = 2
     ST_EXTRAVIADO = 3
@@ -79,19 +88,20 @@ class RegistroEmprestimos(models.Model):
         (ST_DEVOLVIDO, 'Objeto Devolvido'),
         (ST_EXTRAVIADO, 'Objeto Extraviado'),
     )
+
     data_emprestimo = models.DateTimeField(
         null=False, blank=False, auto_now_add=True,
         verbose_name='Data De Emprestimo'
     )
     objeto = models.ForeignKey(
         'app_emprestimos.ObjetoEmprestimo',
-        null=False, blank=False, 
+        null=False, blank=False,
         on_delete=models.PROTECT,
         verbose_name='Objeto Emprestado'
     )
     pessoa = models.ForeignKey(
         'app_emprestimos.Pessoa',
-        null=False, blank=False,   
+        null=False, blank=False,
         on_delete=models.PROTECT,
         verbose_name='Nome Da Pessoa'
     )
@@ -108,5 +118,14 @@ class RegistroEmprestimos(models.Model):
         verbose_name='Status',
         choices=ST_STATUS_CHOICES,
     )
+
+    def __str__(self):
+        return 'Empréstimo de {0} para {1}'.format(
+            self.objeto.nome,
+            self.pessoa.nome,
+        )
+
     class Meta:
-        db_table='REG_001EMP'
+        db_table = 'REG_001EMP'
+        verbose_name = 'Registro de Empréstimo'
+        verbose_name_plural = 'Registros de Empréstimos'
