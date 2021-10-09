@@ -31,3 +31,5 @@
 ~~~
     ./manage.py collectstatic
 ~~~
+
+7. Crie sua própria branche (Seguimos git flow) ou faça um fork para aplicar um pull request
